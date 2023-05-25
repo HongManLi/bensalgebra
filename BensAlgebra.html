@@ -1,0 +1,576 @@
+ <html>
+
+ <head>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column-reverse;
+            background: black;
+        }
+
+        py-terminal {
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        #input-container {
+            display: flex;
+            background: #242424;
+        }
+        #input-container input{
+            flex-grow: 1;
+            line-height: 2;
+            padding-left: 8px;
+            background: transparent;
+            color: #ffe000;
+            border: none;
+        }
+        #input-container button {
+            line-height: 2;
+            color: #ffe000;
+            background: transparent;
+            border: 1px solid gray;
+            min-width: 160px;
+            cursor: pointer;
+        }
+        #input-container button:hover {
+            background: #303030;
+        }
+    </style>
+</head>
+
+<body>
+
+<script>
+
+const targetNode = document.getElementsByTagName("body")[0];
+const config = { attributes: false, childList: true, subtree: true };
+
+// Callback function to execute when mutations are observed
+const callback = (mutationList, observer) => {
+  for (const mutation of mutationList) {
+    if (mutation.type === "childList") {
+      
+        const pyterminal = document.getElementsByTagName("py-terminal")[0];
+        if(pyterminal){
+            pyterminal.scrollTo(0, pyterminal.scrollHeight);
+        }
+    } 
+  }
+};
+
+const observer = new MutationObserver(callback);
+observer.observe(targetNode, config);
+</script>
+
+
+
+<py-script>
+############### Setup ######################
+
+
+import time
+import sys
+from js import prompt
+import asyncio
+
+global globalPromise
+
+async def input(): 
+    Element('input-container').element.style.display = 'flex';
+    Element('input').element.focus();
+    loop = asyncio.get_running_loop()
+    global globalPromise
+    globalPromise = loop.create_future()
+    return (await globalPromise)
+
+def submitInput(): 
+    inputtext = Element('input').element.value
+    if inputtext == '':
+        return
+
+    Element('input').element.value = ''
+    global globalPromise
+    globalPromise.set_result(inputtext)
+    Element('input-container').element.style.display = 'none';
+    
+
+
+##### main function ########
+async def main():
+    # User to specify gender - for roleplaying purposes
+    gender = "" 
+    while gender not in ['male', 'female']:
+        print('Choose gender, please type either Male or Female and press enter')
+        gender = (await input()).lower()   
+
+    if gender== 'male':
+        title = 'prince'
+    else:
+        title = 'princess'
+
+
+
+    
+    
+   
+    # Points
+    virtue = 0
+
+    ############# Story begins ####################
+
+
+    print(f"""
+    You are a young {title}.
+        """
+        )
+
+    await asyncio.sleep(2)
+   
+
+    print("You have a brother and a sister.")
+
+    await asyncio.sleep(2)
+
+
+    print("""
+    You lie lazily on your bed. 
+    The windows glowed yellow in the evening sun.
+    """
+    )
+
+
+    await asyncio.sleep(6)
+
+
+    print("Suddenly your teacher burst open your door.")
+
+
+    await asyncio.sleep(3)
+
+
+
+
+    ######################################################### TEACHER ################################################################
+    response = 3 
+    while response not in ["1", "2"]:
+        print(
+        """
+        Type 1 to say "Good evening, how are you?"
+        Type 2 to say "What on earth are you doing old man?!!" 
+        """)
+        response = (await input())
+        
+
+
+    response = int(response)
+
+
+    if response == 1:
+        virtue += 1
+        print(
+        f"""
+        Teacher: 'Young {title}, sorry to interrupt your lesiure. I have a small problem for you.
+        """)
+
+
+        await asyncio.sleep(3)
+        
+        print(
+        """
+        Please factorise 2x + 4 for me.'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print(
+            """
+        Type in the answer and press enter
+        """)
+
+
+    if response == 2:
+        print(
+        f"""
+        Teacher: 'You are a {title}, you really should have some manners. Have you done your homework?
+        """)
+
+
+        await asyncio.sleep(3)
+        
+        print(
+        """
+        I have a small problem for you.
+        Please factorise 2x + 4 for me.'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print(
+            """
+        Type in the answer and press enter
+        """)
+        
+    teacherq1 = (await input()).replace(" ","")
+    if teacherq1 == "2(x+2)":
+        virtue += 1
+        print ("Teacher: Good job young one \n")
+    else:
+        print("Teacher: Wrong! You really should brush up on your algebra, instead of relaxing all day.\n")
+
+
+
+
+
+
+        
+    await asyncio.sleep(4)
+
+
+
+
+    ######################################################### King ################################################################
+
+
+
+
+    print('You leaned out of the window, and looked at the star studded sky.')
+
+
+    await asyncio.sleep(3)
+
+
+    print(f"Suddenly the king (your father) rushed in.\n")
+
+
+    await asyncio.sleep(2)
+        
+    print("Which subject do you like best?\n")
+
+
+    await asyncio.sleep(3)
+
+
+
+
+    response = 4 
+    while response not in [1, 2, 3]:
+        print(
+        """
+        Type 1 for "Science"
+        Type 2 for "Music"
+        Type 3 for "Chinese literature"
+        """)
+        response = int((await input()))
+
+
+
+
+    if response == 3:
+        virtue+=3
+        print(
+        f"""
+        King: 'That's wonderful. I won't give you algebra test then.'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+
+
+    else:
+        print(
+        f"""
+        King: 'That is not acceptable! I will have to give you algebra test right now!'
+        """)
+
+
+        
+        await asyncio.sleep(3)
+
+
+        print("""
+        Please FULLY factorise 14x - 21 for me.'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print("""
+        Type in the answer and press enter
+        """)
+
+
+        
+        kingq1 = (await input()).replace(" ","")
+        if kingq1 == "7(2x-3)":
+            virtue += 1
+            print (f" At least you are good at Maths ")
+        else:
+            print("King: You are not good at Maths either??")
+
+
+
+
+
+
+    await asyncio.sleep(3)
+
+
+
+
+    ######################################################### Siblings ################################################################
+
+
+    print('You watched sadly your pale, quivering reflection in the river.')
+
+
+    await asyncio.sleep(5)
+
+
+    print("\nYour brother and sister both wants to take control of the country.\n")
+
+
+    await asyncio.sleep(3)
+        
+    print("Who do you help?\n")
+
+
+    await asyncio.sleep(2)
+
+
+    response = 3 
+    while response not in [1, 2]:
+        print(
+        """
+        Type 1 to help your brother
+        Type 2 to help your sister
+        """)
+        response = int((await input()))
+
+
+
+
+    if response == 1:
+        print(
+        f"""
+        Sister: 'How dare you betray me!
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print(
+        f"""
+        Sister: 'I will punish you with this equation!
+        """)
+
+
+        await asyncio.sleep(3)
+        
+        print("""
+        Factorise 8axy + 12bxy for me.'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print("""
+        Type in the answer and press enter
+        """)
+        
+        sister1 = (await input()).replace(" ","")
+        if sister1 == "4xy(a+3b)":
+            virtue += 1
+            print (f"Sister: Fine you win ")
+        else:
+            print("Sister: 'You lost to me, I will be Queen!'")
+
+
+    if response == 2:
+        print(
+        f"""
+        Brother: 'How dare you betray me!
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print(
+        f"""
+        Brother: 'I will punish you with this equation!
+        """)
+
+
+        await asyncio.sleep(3)
+        
+        print("""
+        Factorise 3kxu + 4kxi for me.'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print("""
+        Type in the answer and press enter
+        """)
+        
+        brother1 = (await input()).replace(" ","")
+        if brother1 == "kx(3u+4)":
+            virtue += 1
+            print (f"Brother: Fine you win ")
+        else:
+            print("Brother: 'You lost to me, I will be King!'")
+
+
+
+
+
+
+
+
+    await asyncio.sleep(3)
+
+
+    ######################################################### Teacher betrayal ################################################################
+
+
+    print('You leant your head against an ancient elm, as if listening for a heartbeat.')
+
+
+    await asyncio.sleep(3)
+
+
+    if virtue> 3:
+        print(
+        f"""
+        Teacher: 'You have been getting a lot of stuff right.'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print(
+        f"""
+        Teacher: 'I will give you one easy last question.'
+        """)
+
+
+        await asyncio.sleep(3)
+        
+        print("""
+        Factorise 6c - 8d'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print("""
+        Type in the answer and press enter
+        """)
+        
+        last1 = (await input()).replace(" ","")
+        if last1 == "2(3c-4d)":
+            virtue += 1
+            print (f"Well done")
+        else:
+            print("Teacher: 'You disappoint me'")
+
+
+
+
+    else:
+        print(
+        f"""
+        Teacher: 'You have been getting many things wrong'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print(
+        f"""
+        Teacher: 'I will give you a very hard question now.'
+        """)
+
+
+        await asyncio.sleep(3)
+        
+        print("""
+        Factorise 9abc - 15adf'
+        """)
+
+
+        await asyncio.sleep(3)
+
+
+        print("""
+        Type in the answer and press enter
+        """)
+        
+        last1 = (await input()).replace(" ","")
+        if last1 == "3a(3bc-5df)":
+            virtue += 10
+            print (f"Amzaing, how did you do that?")
+        else:
+            print("Teacher: 'You disappoint me'")
+
+
+
+
+    await asyncio.sleep(3)
+
+
+    print('Your total score is', virtue)
+
+
+    await asyncio.sleep(2)
+
+
+    if virtue > 4:
+        print("YOU HAVE EARNED THE THRONE. YOU WON!!!")
+    else:
+        print("You have lost. Your sister or brother became the ruler")
+            
+
+
+    ending = ""
+    while ending == "":
+        print ("Press any key to end")
+        ending = (await input())
+
+    await asyncio.sleep(1)
+    
+    
+asyncio.ensure_future(main())
+
+</py-script> 
+
+
+<div >
+    <form id="input-container" onsubmit="return false;">
+        <input type="text" id="input"/>
+        <button id="submit-button" type="submit" py-click="submitInput()">Submit</button>
+    </form>
+</div>
+
+</body>
+
+
+</html>
